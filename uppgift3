@@ -1,0 +1,56 @@
+#3b)
+import numpy as np
+import matplotlib.pyplot as plt
+def odefun(t, U, b, vR, vL):
+    theta = U [2]
+
+    dx = ((vR(t) + vL(t))/2)*np.cos(theta)
+    dy = ((vR(t) + vL(t))/2)*np.sin(theta)
+    dtheta = (vR(t)- vL(t))/b
+
+    return np.array([dx, dy, dtheta])
+
+#3c)
+def forward_euler(f, t0, tf, U0, N):
+    h = (tf - t0)/N
+    
+    U = np.zeros((3, N+1))
+    t = np.zeros((N+1))
+
+    t[0] = t0
+    U[:, 0] = U0
+    
+    for j in range(N):
+        U[:, j+1] = U[:, j] +h*f(t[j], U[:, j])
+        t[j+1] = t[j] + h
+    
+    return t, U
+
+x0 = 0
+y0 = 0
+theta0 = 0
+b = 1
+wR = 2
+wL = 4
+
+vR = lambda t: wR
+vL = lambda t: wL
+f = lambda t, U: odefun(t, U, b, vR, vL)
+
+t0 = 0
+tf = np.pi
+U0 = np.array([x0, y0, theta0])
+N = 100
+
+t, U = forward_euler(f, t0, tf, U0, N)
+
+x = U[0, :]
+y = U[1, :]
+theta =U[2, :]
+
+plt.plot(x, y)
+plt.xlabel("x")
+plt.ylabel("y")
+plt.title("Robotens bana")
+plt.axis("equal")
+plt.show()
