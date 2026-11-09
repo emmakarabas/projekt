@@ -62,6 +62,10 @@ x = U[0, :]
 y = U[1, :]
 theta =U[2, :]
 
+print(f"Cirkelns mittpunkt: ({xbar}, {ybar})")
+print(f"Radie: {R}")
+print(f"Varvtid: {Tlap}")
+
 plt.plot(x, y)
 plt.xlabel("x")
 plt.ylabel("y")
