@@ -26,6 +26,19 @@ def forward_euler(f, t0, tf, U0, N):
     
     return t, U
 
+def robotcircle(b, wL, wR, x0, y0, theta0):
+    ''' 
+    Cirkelbana med konstant hjulfart
+    Returnerar mittpunkt (xbar, ybar), R och varvtid (Tlap)
+    '''
+    w = (wR + wL)/2 #medelfart
+    Dw = (wR - wL)/b #vinkelhastighet
+    xbar = x0 - (w/Dw)*np.sin(theta0)
+    ybar = y0 + (w/Dw)*np.cos(theta0)
+    R = abs(w/Dw)
+    Tlap = 2*np.pi/abs(Dw)
+    return xbar, ybar, R, Tlap
+
 x0 = 0
 y0 = 0
 theta0 = 0
@@ -37,8 +50,9 @@ vR = lambda t: wR
 vL = lambda t: wL
 f = lambda t, U: odefun(t, U, b, vR, vL)
 
+xbar, ybar, R, Tlap = robotcircle(b, wL, wR, x0, y0, theta0)
 t0 = 0
-tf = np.pi
+tf = Tlap
 U0 = np.array([x0, y0, theta0])
 N = 100
 
